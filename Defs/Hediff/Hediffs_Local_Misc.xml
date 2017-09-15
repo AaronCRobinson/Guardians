@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<HediffDefs>
+
+  <HediffDef>
+    <defName>GDN_Charge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>Charge</label>
+    <defaultLabelColor>(1,0.3,0.5)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>	
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>
+          <min>700</min>
+          <max>700</max>
+        </disappearsAfterTicks>
+      </li>	  
+    </comps>
+    <stages>
+      <li>
+        <restFallFactor>1.33</restFallFactor>
+        <statOffsets>
+          <MoveSpeed>8.0</MoveSpeed>
+          <WorkSpeedGlobal>2.0</WorkSpeedGlobal>		  
+        </statOffsets>
+      </li>
+    </stages>	
+  </HediffDef>
+
+</HediffDefs>

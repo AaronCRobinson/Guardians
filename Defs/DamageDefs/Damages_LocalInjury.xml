@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <DamageDef Name="LocalInjuryBase" Abstract="True">
+    <workerClass>DamageWorker_AddInjury</workerClass>
+  </DamageDef>
+
+  <DamageDef Name="Scratch" ParentName="LocalInjuryBase" Abstract="True">
+    <defName>Scratch</defName>
+    <label>scratch</label>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been torn to death.</deathMessage>
+    <hediff>Scratch</hediff>
+    <hediffSolid>Crack</hediffSolid>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Slice</impactSoundType>
+    <armorCategory>Sharp</armorCategory>
+  </DamageDef>
+
+  <DamageDef ParentName="Scratch">
+    <defName>ToxicScratch</defName>
+    <label>toxic scratch</label>
+    <additionalHediffs>
+      <li>
+        <hediff>ToxicBuildup</hediff>
+        <severityPerDamageDealt>0.001</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+
+  <DamageDef Name="Bite" ParentName="LocalInjuryBase" Abstract="True">
+    <defName>Bite</defName>
+    <label>bite</label>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been bitten to death.</deathMessage>
+    <hediff>Bite</hediff>
+    <hediffSolid>Crack</hediffSolid>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Slice</impactSoundType>
+    <armorCategory>Sharp</armorCategory>
+  </DamageDef>
+
+  <DamageDef ParentName="Bite">
+    <defName>VeryToxicBite</defName>
+    <label>very toxic bite</label>
+    <additionalHediffs>
+      <li>
+        <hediff>ToxicBuildup</hediff>
+        <severityPerDamageDealt>0.002</severityPerDamageDealt>
+      </li>
+    </additionalHediffs>
+  </DamageDef>
+
+</Defs>
