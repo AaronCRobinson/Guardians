@@ -14,14 +14,12 @@ namespace Guardians
         // PERFORMANCE
         private static List<VerbEntry> extraVerbs = new List<VerbEntry>();
 
-        public CompExtraVerbs()
-        {
-            this.pawn = (Pawn)this.parent;
-        }
-
         // REFERENCE: RimWorld.Pawn_MeleeVerbs
         public void ChooseExtraVerb()
         {
+#if DEBUG
+            Log.Message($"ChooseExtraVerb:");
+#endif
             List<VerbEntry> updatedAvailableVerbsList = this.GetUpdatedAvailableVerbsList();
             if (updatedAvailableVerbsList.Count == 0)
                 this.SetCurExtraVerb(null);
@@ -43,6 +41,19 @@ namespace Guardians
             }
         }
 
+        protected Pawn Pawn
+        {
+            get
+            {
+                if (this.pawn == null)
+                {
+                    this.pawn = (Pawn)this.parent;
+                }
+                return this.pawn;
+            }
+        }
+
+
         // REFERENCE: RimWorld.Pawn_MeleeVerbs
         public List<VerbEntry> GetUpdatedAvailableVerbsList()
         {
@@ -57,12 +68,12 @@ namespace Guardians
                     return CompExtraVerbs.extraVerbs;
                 }
             }*/
-            List<Verb> allVerbs = this.pawn.verbTracker.AllVerbs;
+            List<Verb> allVerbs = this.Pawn.VerbTracker.AllVerbs;
             for (int i = 0; i < allVerbs.Count; i++)
             {
-                if (!(allVerbs[i] is Verb_MeleeAttack) && allVerbs[i].IsStillUsableBy(this.pawn))
+                if (!(allVerbs[i] is Verb_MeleeAttack) && allVerbs[i].IsStillUsableBy(this.Pawn))
                 {
-                    CompExtraVerbs.extraVerbs.Add(new VerbEntry(allVerbs[i], this.pawn, null));
+                    CompExtraVerbs.extraVerbs.Add(new VerbEntry(allVerbs[i], this.Pawn, null));
                 }
             }
             // NOTE: do not care right now (not doing extra abilities in hediffs)
@@ -73,6 +84,9 @@ namespace Guardians
                     CompExtraVerbs.extraVerbs.Add(new VerbEntry(current, this.pawn, null));
                 }
             }*/
+#if DEBUG
+            Log.Message($"GetUpdatedAvailableVerbsList: {CompExtraVerbs.extraVerbs.NullOrEmpty()}");
+#endif
             return CompExtraVerbs.extraVerbs;
         }
 

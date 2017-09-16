@@ -12,13 +12,13 @@
       <MarketValue>10000</MarketValue>
     </statBases>
     <verbs>
-      <li>
+      <!--<li>
         <verbClass>Guardians.Verb_Charge</verbClass>
         <defaultCooldownTime>60</defaultCooldownTime>
-        <!--<range>50</range>-->
+        <range>50</range>
         <isPrimary>false</isPrimary>
         <burstShotCount>60</burstShotCount>
-      </li>
+      </li>-->
       <li>
         <verbClass>Verb_MeleeAttack</verbClass>
         <meleeDamageBaseAmount>45</meleeDamageBaseAmount>
