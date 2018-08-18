@@ -5,54 +5,63 @@
     <defName>GDN_ThiccBeast</defName>
     <label>caniceros</label>
     <description>The caniceros has simularities to wolves and rhinos. [TODO]</description>
-    <size>(7,7)</size>
+    <size>(6,6)</size>
     <statBases>
       <MoveSpeed>3.5</MoveSpeed>
       <ComfyTemperatureMin>-45</ComfyTemperatureMin>
       <MarketValue>10000</MarketValue>
     </statBases>
-    <verbs>
-      <!--<li>
-        <verbClass>Guardians.Verb_Charge</verbClass>
-        <defaultCooldownTime>60</defaultCooldownTime>
-        <range>50</range>
-        <isPrimary>false</isPrimary>
-        <burstShotCount>60</burstShotCount>
-      </li>-->
+    <tools>
       <li>
-        <verbClass>Verb_MeleeAttack</verbClass>
-        <meleeDamageBaseAmount>45</meleeDamageBaseAmount>
-        <defaultCooldownTime>2</defaultCooldownTime>
-        <meleeDamageDef>Scratch</meleeDamageDef>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>23</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
-        <commonality>2</commonality>
-        <isPrimary>false</isPrimary>
-        <burstShotCount>30</burstShotCount>
       </li>
       <li>
-        <verbClass>Verb_MeleeAttack</verbClass>
-        <meleeDamageBaseAmount>45</meleeDamageBaseAmount>
-        <defaultCooldownTime>2</defaultCooldownTime>
-        <meleeDamageDef>Scratch</meleeDamageDef>
+        <label>right claw</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
-        <commonality>2</commonality>
-        <isPrimary>false</isPrimary>
-        <burstShotCount>30</burstShotCount>
       </li>
       <li>
-        <verbClass>Verb_MeleeAttack</verbClass>
-        <meleeDamageBaseAmount>35</meleeDamageBaseAmount>
-        <defaultCooldownTime>2</defaultCooldownTime>
-        <meleeDamageDef>Scratch</meleeDamageDef>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
       </li>
-      <li>
-        <verbClass>Verb_MeleeAttack</verbClass>
-        <meleeDamageBaseAmount>35</meleeDamageBaseAmount>
-        <defaultCooldownTime>2</defaultCooldownTime>
-        <meleeDamageDef>Scratch</meleeDamageDef>
-        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
-      </li>
+    </tools>
+    <!--<verbs>
       <li>
         <verbClass>Verb_MeleeAttack</verbClass>
         <meleeDamageBaseAmount>55</meleeDamageBaseAmount>
@@ -81,7 +90,7 @@
         <commonality>0.15</commonality>
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
       </li>
-    </verbs>
+    </verbs>-->
     <tickerType>Normal</tickerType>
     <comps>
       <li Class="Guardians.CompProperties_PeriodicVerbs"/>
@@ -95,15 +104,12 @@
       <packAnimal>false</packAnimal>
       <predator>true</predator>
       <foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
-      <leatherLabel>caniceros hide</leatherLabel>
-      <leatherColor>(130,102,50)</leatherColor>
-      <leatherInsulation>1</leatherInsulation>
+      <leatherDef>Leather_Caniceros</leatherDef>
       <useMeatFrom>Alphabeaver</useMeatFrom>
       <gestationPeriodDays>60</gestationPeriodDays>
       <wildness>1</wildness>
       <manhunterOnTameFailChance>1</manhunterOnTameFailChance>
       <manhunterOnDamageChance>1</manhunterOnDamageChance>
-      <trainableIntelligence>None</trainableIntelligence>
       <lifeExpectancy>32</lifeExpectancy>
       <lifeStageAges>
         <li>
@@ -123,8 +129,11 @@
         <Tundra>0.03</Tundra>
       </wildBiomes>
     </race>
+    <modExtensions>
+      <li Class="Guardians.GuardianExtension"/>
+    </modExtensions>
   </ThingDef>
-  
+
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>GDN_ThiccBeast</defName>
     <label>caniceros</label>
@@ -142,8 +151,8 @@
         </bodyGraphicData>
         <!-- TODO -->
         <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Muffalo/MuffaloDessicated</texPath>
-          <drawSize>3.6</drawSize>
+          <texPath>Things/Pawn/Animal/Rhino/Dessicated_Rhino</texPath>
+          <drawSize>7.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

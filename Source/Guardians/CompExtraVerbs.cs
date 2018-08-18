@@ -24,7 +24,10 @@ namespace Guardians
             if (updatedAvailableVerbsList.Count == 0)
                 this.SetCurExtraVerb(null);
             else
-                this.SetCurExtraVerb(updatedAvailableVerbsList.RandomElementByWeight((VerbEntry ve) => ve.SelectionWeight).verb);
+            {
+                updatedAvailableVerbsList.TryRandomElementByWeight((VerbEntry ve) => ve.GetSelectionWeight(null), out VerbEntry verbEntry);
+                this.SetCurExtraVerb(verbEntry.verb);
+            }
         }
 
         // REFERENCE: RimWorld.Pawn_MeleeVerbs
@@ -73,7 +76,7 @@ namespace Guardians
             {
                 if (!(allVerbs[i] is Verb_MeleeAttack) && allVerbs[i].IsStillUsableBy(this.Pawn))
                 {
-                    CompExtraVerbs.extraVerbs.Add(new VerbEntry(allVerbs[i], this.Pawn, null));
+                    CompExtraVerbs.extraVerbs.Add(new VerbEntry(allVerbs[i], this.Pawn));
                 }
             }
             // NOTE: do not care right now (not doing extra abilities in hediffs)

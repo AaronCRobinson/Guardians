@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Base decision tree by ChJees -->
+  <AbilityUserAI.AbilityUserAIProfileDef Name="BaseAbilityUserAI" Abstract="True">
+    <!-- Decision tree which helps pick ability to use. -->
+    <decisionTree>
+      <subNodes>
+        <!-- In combat -->
+        <li Class="AbilityUserAI.AbilityDecisionConditionalNode_InCombat">
+          <subNodes>
+            <!-- Try heal themselves first. -->
+            <li Class="AbilityUserAI.AbilityDecisionConditionalNode_CasterHealth">
+              <maxHealth>0.8</maxHealth>
+              <subNodes>
+                <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                  <tags>
+                    <li>Heal</li>
+                    <li>Self</li>
+                  </tags>
+                </li>
+              </subNodes>
+            </li>
+            <!-- Try heal others second. -->
+            <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+              <tags>
+                <li>Heal</li>
+                <li>Ally</li>
+              </tags>
+            </li>
+            <li Class="AbilityUserAI.AbilityDecisionConditionalNode_HasEnemyTarget">
+              <subNodes>
+                <!-- Attempt to Disarm if we can. -->
+                <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetIsArmed">
+                  <subNodes>
+                    <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetDistance">
+                      <maxDistance>12.0</maxDistance>
+                      <subNodes>
+                        <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                          <tags>
+                            <li>Disarm</li>
+                          </tags>
+                        </li>
+                      </subNodes>
+                    </li>
+                  </subNodes>
+                </li>
+                <!-- Using ranged weapon, more defensive ability use. -->
+                <li Class="AbilityUserAI.AbilityDecisionConditionalNode_UsingRangedWeapon">
+                  <subNodes>
+                    <!-- Bridge the gap. Keep them away! -->
+                    <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetDistance">
+                      <maxDistance>16.0</maxDistance>
+                      <subNodes>
+                        <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                          <tags>
+                            <li>GapBuilder</li>
+                          </tags>
+                        </li>
+                      </subNodes>
+                    </li>
+                    <!-- Close the gap. Only to get to the enemy.-->
+                    <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetDistance">
+                      <minDistance>60.0</minDistance>
+                      <subNodes>
+                        <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                          <tags>
+                            <li>GapCloser</li>
+                            <li>Self</li>
+                          </tags>
+                        </li>
+                      </subNodes>
+                    </li>
+                    <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetDistance">
+                      <maxDistance>20.0</maxDistance>
+                      <subNodes>
+                        <!-- Use defensive abilities. -->
+                        <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                          <tags>
+                            <li>Defensive</li>
+                          </tags>
+                          <blacklistedTags>
+                            <li>GapCloser</li>
+                          </blacklistedTags>
+                        </li>
+                      </subNodes>
+                    </li>
+                    <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetDistance">
+                      <maxDistance>50.0</maxDistance>
+                      <subNodes>
+                        <!-- Use offensive abilities. -->
+                        <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                          <tags>
+                            <li>Offensive</li>
+                          </tags>
+                          <blacklistedTags>
+                            <li>GapCloser</li>
+                          </blacklistedTags>
+                        </li>
+                      </subNodes>
+                    </li>
+                  </subNodes>
+                </li>
+                <!-- Using melee weapon, agressive ability use. -->
+                <li Class="AbilityUserAI.AbilityDecisionConditionalNode_UsingMeleeWeapon">
+                  <countUnarmed>false</countUnarmed>
+                  <subNodes>
+                    <!-- Close the gap. -->
+                    <li Class="AbilityUserAI.AbilityDecisionConditionalNode_EnemyTargetDistance">
+                      <minDistance>6.0</minDistance>
+                      <subNodes>
+                        <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                          <tags>
+                            <li>GapCloser</li>
+                            <li>Self</li>
+                          </tags>
+                        </li>
+                      </subNodes>
+                    </li>
+                    <!-- Use offensive abilities. -->
+                    <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                      <tags>
+                        <li>Offensive</li>
+                      </tags>
+                    </li>
+                    <!-- Use defensive abilities. -->
+                    <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                      <tags>
+                        <li>Defensive</li>
+                      </tags>
+                    </li>
+                  </subNodes>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <!-- Out of combat -->
+        <li Class="AbilityUserAI.AbilityDecisionConditionalNode_InCombat">
+          <invert>true</invert>
+          <subNodes>
+            <!-- Try heal themselves first. -->
+            <li Class="AbilityUserAI.AbilityDecisionConditionalNode_CasterHealth">
+              <maxHealth>0.99</maxHealth>
+              <subNodes>
+                <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+                  <tags>
+                    <li>Heal</li>
+                    <li>Self</li>
+                  </tags>
+                </li>
+              </subNodes>
+            </li>
+            <!-- Try heal others second. -->
+            <li Class="AbilityUserAI.AbilityDecisionNode_PickAbilityWithMatchingTags">
+              <tags>
+                <li>Heal</li>
+                <li>Ally</li>
+              </tags>
+              <blacklistedTags>
+                <li>Offensive</li>
+              </blacklistedTags>
+            </li>
+          </subNodes>
+        </li>
+      </subNodes>
+    </decisionTree>
+  </AbilityUserAI.AbilityUserAIProfileDef>
+
+  <!-- Guardians -->
+  <AbilityUserAI.AbilityUserAIProfileDef ParentName="BaseAbilityUserAI">
+    <defName>GuardianAbilityUserAI</defName>
+    <compAbilityUserClass>Guardians.CompGuardian</compAbilityUserClass>
+    <!-- Allowed abilities -->
+    <abilities>
+      <li>Guardians_Firebreath</li>
+      <li>Guardians_Charge</li>
+    </abilities>
+  </AbilityUserAI.AbilityUserAIProfileDef>
+
+  <!-- Abilities -->
+  <AbilityUserAI.AbilityAIDef Name="BaseAbilityAI" Abstract="True">
+    <maxRange>60.0</maxRange>
+    <tags>
+      <li>Guardian</li>
+    </tags>
+  </AbilityUserAI.AbilityAIDef>
+
+  <AbilityUserAI.AbilityAIDef ParentName="BaseAbilityAI">
+    <defName>Guardians_Firebreath</defName>
+    <ability>GDN_Firebreath</ability>
+    <power>1.0</power>
+    <needSeeingTarget>false</needSeeingTarget>
+    <tags>
+      <li>Offensive</li>
+      <li>Single</li>
+    </tags>
+  </AbilityUserAI.AbilityAIDef>
+
+  <AbilityUserAI.AbilityAIDef ParentName="BaseAbilityAI">
+    <defName>Guardians_Charge</defName>
+    <ability>GDN_Charge</ability>
+    <power>1.0</power>
+    <needSeeingTarget>false</needSeeingTarget>
+    <tags>
+      <li>Self</li>
+      <li>GapCloser</li>
+    </tags>
+  </AbilityUserAI.AbilityAIDef>
+
+</Defs>

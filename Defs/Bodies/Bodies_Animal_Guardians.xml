@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <!--
-	Each coverage value is relative to its parent.
-	Remaining body part coverage (100% minus coverage of all child nodes) is a chance to hit exactly this part.
-	Damage "starts" at corePart, and then "goes deeper" until it hits remaining body part coverage or leaf node
+    Each coverage value is relative to its parent.
+    Remaining body part coverage (100% minus coverage of all child nodes) is a chance to hit exactly this part.
+    Damage "starts" at corePart, and then "goes deeper" until it hits remaining body part coverage or leaf node
   - this body part is then hit.
 -->
 
-<BodyDefs>
+<Defs>
 
   <BodyDef>
     <defName>GDN_ThiccBeast</defName>
@@ -19,12 +19,12 @@
       <parts>
         <li>
           <def>Spine</def>
-          <coverage>0.03</coverage>
+          <coverage>0.05</coverage>
           <depth>Inside</depth>
         </li>
         <li>
           <def>Stomach</def>
-          <coverage>0.03</coverage>
+          <coverage>0.04</coverage>
           <depth>Inside</depth>
         </li>
         <li>
@@ -33,22 +33,26 @@
           <depth>Inside</depth>
         </li>
         <li>
-          <def>LeftLung</def>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.04</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.04</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
           <coverage>0.03</coverage>
           <depth>Inside</depth>
         </li>
         <li>
-          <def>RightLung</def>
-          <coverage>0.03</coverage>
-          <depth>Inside</depth>
-        </li>
-        <li>
-          <def>LeftKidney</def>
-          <coverage>0.03</coverage>
-          <depth>Inside</depth>
-        </li>
-        <li>
-          <def>RightKidney</def>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
           <coverage>0.03</coverage>
           <depth>Inside</depth>
         </li>
@@ -82,20 +86,24 @@
                   </parts>
                 </li>
                 <li>
-                  <def>LeftEye</def>
-                  <coverage>0.09</coverage>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.11</coverage>
                 </li>
                 <li>
-                  <def>RightEye</def>
-                  <coverage>0.09</coverage>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.11</coverage>
                 </li>
                 <li>
-                  <def>LeftEar</def>
-                  <coverage>0.06</coverage>
+									<def>Ear</def>
+									<customLabel>left ear</customLabel>
+                  <coverage>0.08</coverage>
                 </li>
                 <li>
-                  <def>RightEar</def>
-                  <coverage>0.06</coverage>
+									<def>Ear</def>
+									<customLabel>right ear</customLabel>
+                  <coverage>0.08</coverage>
                 </li>
                 <li>
                   <def>Nose</def>
@@ -109,14 +117,16 @@
                   </groups>
                   <parts>
                     <li>
-                      <def>LeftHorn</def>
+                      <def>Horn</def>
+                      <customLabel>left horn</customLabel>
                       <coverage>0.4</coverage>
                       <groups>
                         <li>HornAttackTool</li>
                       </groups>
                     </li>
                     <li>
-                      <def>RightHorn</def>
+                      <def>Horn</def>
+                      <customLabel>right horn</customLabel>
                       <coverage>0.4</coverage>
                       <groups>
                         <li>HornAttackTool</li>
@@ -129,65 +139,75 @@
           </parts>
         </li>
         <li>
-					<def>FrontLeftLeg</def>
-					<coverage>0.1</coverage>
-					<height>Bottom</height>
-					<parts>
-						<li>
-							<def>FrontLeftLegFirstClaw</def>
-							<coverage>0.05</coverage>
-							<groups>
-								<li>FrontLeftClaws</li>
-							</groups>
-						</li>
-						<li>
-							<def>FrontLeftPaw</def>
-							<coverage>0.15</coverage>
-							<groups>
-								<li>FrontLeftPaw</li>
-							</groups>
-						</li>
-					</parts>
-				</li>
-				<li>
-					<def>FrontRightLeg</def>
-					<coverage>0.1</coverage>
-					<height>Bottom</height>
-					<parts>
-						<li>
-							<def>FrontRightLegFirstClaw</def>
-							<coverage>0.05</coverage>
-							<groups>
-								<li>FrontRightClaws</li>
-							</groups>
-						</li>
-						<li>
-							<def>FrontRightPaw</def>
-							<coverage>0.15</coverage>
-							<groups>
-								<li>FrontRightPaw</li>
-							</groups>
-						</li>
-					</parts>
-				</li>
+          <def>Leg</def>
+					<customLabel>front left leg</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>FrontClaw</def>
+							<customLabel>front right leg claw</customLabel>
+              <coverage>0.05</coverage>
+              <groups>
+                <li>FrontLeftClaws</li>
+              </groups>
+            </li>
+            <li>
+							<def>Paw</def>
+							<customLabel>front left paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontLeftPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
         <li>
-          <def>RearLeftLeg</def>
+					<def>Leg</def>
+					<customLabel>front right leg</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>FrontClaw</def>
+							<customLabel>front right leg claw</customLabel>
+              <coverage>0.05</coverage>
+              <groups>
+                <li>FrontRightClaws</li>
+              </groups>
+            </li>
+            <li>
+              <def>Paw</def>
+							<customLabel>front right paw</customLabel>
+              <coverage>0.15</coverage>
+              <groups>
+                <li>FrontRightPaw</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+					<def>Leg</def>
+					<customLabel>rear left leg</customLabel>
           <coverage>0.09</coverage>
           <height>Bottom</height>
           <parts>
             <li>
-              <def>RearLeftHoof</def>
+              <def>Hoof</def>
+              <customLabel>rear left hoof</customLabel>
               <coverage>0.15</coverage>
             </li>
           </parts>
         </li>
         <li>
-          <def>RearRightLeg</def>
+					<def>Leg</def>
+					<customLabel>rear right leg</customLabel>
           <coverage>0.09</coverage>
           <height>Bottom</height>
           <parts>
             <li>
-              <def>RearRightHoof</def>
+              <def>Hoof</def>
+              <customLabel>rear right hoof</customLabel>
               <coverage>0.15</coverage>
             </li>
           </parts>
@@ -196,4 +216,4 @@
     </corePart>
   </BodyDef>
 
-</BodyDefs>
+</Defs>

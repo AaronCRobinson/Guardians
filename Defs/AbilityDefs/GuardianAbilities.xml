@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef Class="AbilityUser.ProjectileDef_AbilityLaser">
+    <defName>GDN_FirebreathSpark</defName>
+    <category>Projectile</category>
+    <label>firebreath spark</label>
+    <thingClass>Guardians.FirebreathSpark</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/Spark</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Projectile</altitudeLayer>
+    <useHitPoints>False</useHitPoints>
+    <neverMultiSelect>True</neverMultiSelect>
+    <projectile>
+      <!--<alwaysFreeIntercept>true</alwaysFreeIntercept>-->
+      <speed>30</speed>
+    </projectile>
+  </ThingDef>
+
+  <AbilityUser.AbilityDef>
+    <defName>GDN_Firebreath</defName>
+    <label>firebreath</label>
+    <!--<uiIconPath>UI/Fire</uiIconPath>-->
+    <description>TODO</description>
+    <MainVerb Class="AbilityUser.VerbProperties_Ability">
+      <verbClass>AbilityUser.Verb_UseAbility</verbClass>
+      <tooltipShowProjectileDamage>false</tooltipShowProjectileDamage>
+      <tooltipShowExtraDamages>false</tooltipShowExtraDamages>
+      <hasStandardCommand>true</hasStandardCommand>
+      <defaultProjectile>GDN_FirebreathSpark</defaultProjectile>
+      <abilityDef>GDN_Firebreath</abilityDef>
+      <SecondsToRecharge>10.0</SecondsToRecharge>
+      <range>4</range>
+      <burstShotCount>1</burstShotCount>
+      <ticksBetweenBurstShots>2</ticksBetweenBurstShots>
+      <muzzleFlashScale>20</muzzleFlashScale>
+      <isPrimary>false</isPrimary>
+      <AbilityTargetCategory>TargetLocation</AbilityTargetCategory>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetBuildings>true</canTargetBuildings>
+        <canTargetItems>true</canTargetItems>
+        <canTargetLocations>true</canTargetLocations>
+        <mustBeSelectable>false</mustBeSelectable>
+        <canTargetSelf>false</canTargetSelf>
+      </targetParams>
+    </MainVerb>
+  </AbilityUser.AbilityDef>
+
+  <AbilityUser.AbilityDef>
+    <defName>GDN_Charge</defName>
+    <label>charge</label>
+    <MainVerb Class="AbilityUser.VerbProperties_Ability">
+      <verbClass>AbilityUser.Verb_UseAbility</verbClass>
+      <tooltipShowProjectileDamage>false</tooltipShowProjectileDamage>
+      <tooltipShowExtraDamages>false</tooltipShowExtraDamages>
+      <tooltipShowHediffsToApply>false</tooltipShowHediffsToApply>
+      <tooltipShowMentalStatesToApply>false</tooltipShowMentalStatesToApply>
+      <hasStandardCommand>true</hasStandardCommand>
+      <!--<defaultProjectile>GDN_FirebreathSpark</defaultProjectile>-->
+      <abilityDef>GDN_Charge</abilityDef>
+      <SecondsToRecharge>10.0</SecondsToRecharge>
+      <range>4</range>
+      <burstShotCount>1</burstShotCount>
+      <ticksBetweenBurstShots>2</ticksBetweenBurstShots>
+      <muzzleFlashScale>20</muzzleFlashScale>
+      <isPrimary>false</isPrimary>
+      <AbilityTargetCategory>TargetSelf</AbilityTargetCategory>
+      <targetParams>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+        <canTargetSelf>true</canTargetSelf>
+      </targetParams>
+      <hediffsToApply>
+        <li>
+          <hediffDef>GDN_Charge</hediffDef>
+          <applyChance>1.0</applyChance>
+        </li>
+      </hediffsToApply>
+    </MainVerb>
+  </AbilityUser.AbilityDef>
+
+</Defs>

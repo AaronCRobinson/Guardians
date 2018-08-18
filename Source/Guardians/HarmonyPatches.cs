@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -14,94 +13,39 @@ namespace Guardians
     [StaticConstructorOnStartup]
     class HarmonyPatches
     {
-        private static MethodInfo MI_TryGetExtraVerb = AccessTools.Method(typeof(ExtraVerbsHelper), nameof(ExtraVerbsHelper.TryGetExtraVerb));
-        //private static MethodInfo MI_TryGetExtraVerbJob = AccessTools.Method(typeof(ExtraVerbsHelper), nameof(ExtraVerbsHelper.TryGetExtraVerbJob));
-
         static HarmonyPatches()
         {
 #if DEBUG
             HarmonyInstance.DEBUG = true;
 #endif
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.whyisthat.guardians.main");
-            harmony.Patch(AccessTools.Method(typeof(Pawn), nameof(Pawn.TryGetAttackVerb)), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TryGetAttackVerbTranspiler)));
-            //harmony.Patch(AccessTools.Method(typeof(JobGiver_Manhunter), "TryGiveJob"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(ManhunterTryGiveJobTranspiler)));
+            // TODO: revisit transpilers for performance...
+            harmony.Patch(AccessTools.Method(typeof(Pawn), nameof(Pawn.TryGetAttackVerb)), new HarmonyMethod(typeof(HarmonyPatches), nameof(TryGetAttackVerbPrefix)), null);
             harmony.Patch(AccessTools.Method(typeof(JobGiver_Manhunter), "TryGiveJob"), new HarmonyMethod(typeof(HarmonyPatches), nameof(ManhunterTryGiveJobPrefix)), null);
 
         }
 
-        public static IEnumerable<CodeInstruction> TryGetAttackVerbTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        public static bool TryGetAttackVerbPrefix(Pawn __instance, ref Verb __result, Thing target)
         {
-            List<CodeInstruction> instructionList = instructions.ToList();
-            bool firstTime = true;
-            for (int i = 0; i < instructionList.Count; i++)
+            if (__instance.GetComp<CompExtraVerbs>() != null)
             {
-                yield return instructionList[i];
-                if (instructionList[i].opcode == OpCodes.Ret && firstTime)
-                {
-                    i++;
-                    // Fix labels (or else the injected code will be skipped)
-                    List<Label> juggledLabels = instructionList[i].labels;
-
-                    yield return new CodeInstruction(OpCodes.Ldarg_0) { labels = juggledLabels };
-                    // NOTE: storing this as a variable did not work (unsure why)
-                    yield return new CodeInstruction(OpCodes.Call, MI_TryGetExtraVerb);
-
-                    // branch (if)
-                    Label @continue = il.DefineLabel();
-                    yield return new CodeInstruction(OpCodes.Brfalse, @continue);
-
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Call, MI_TryGetExtraVerb);
-                    yield return new CodeInstruction(OpCodes.Ret);
-
-                    // end if
-                    CodeInstruction instruction = new CodeInstruction(instructionList[i].opcode, instructionList[i].operand);
-                    instruction.labels.Add(@continue);
-                    yield return instruction;
-
-                    firstTime = false;
-                }
+                Log.Message("TryGetAttackVerbPrefix");
+                __result = ExtraVerbsHelper.TryGetExtraVerb(__instance);
+                return __result == null ? true : false;
             }
+            return true;
         }
 
         public static bool ManhunterTryGiveJobPrefix(JobGiver_Manhunter __instance, ref Job __result, Pawn pawn)
         {
             if (pawn.GetComp<CompExtraVerbs>() != null)
             {
+                Log.Message("ManhunterTryGiveJobPrefix");
                 __result = __instance.TryGiveJobWithExtraVerbs(pawn);
                 return false;
             }
             return true;
         }
-
-        // NOTE: a prefix with a hard detour may be easier/better
-        /*public static IEnumerable<CodeInstruction> ManhunterTryGiveJobTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-        {
-            List<CodeInstruction> instructionList = instructions.ToList();
-            bool firstTime = true;
-            for (int i = 0; i < instructionList.Count; i++)
-            {
-                yield return instructionList[i];
-                if (instructionList[i].opcode == OpCodes.Ret && firstTime)
-                {
-                    i++;
-                    // Fix labels (or else the injected code will be skipped)
-                    List<Label> juggledLabels = instructionList[i].labels;
-
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Ldarg_1);
-                    yield return new CodeInstruction(OpCodes.Call, MI_TryGetExtraVerbJob);
-
-                    // end if
-                    CodeInstruction instruction = new CodeInstruction(instructionList[i].opcode, instructionList[i].operand);
-                    //instruction.labels.Add(@continue);
-                    yield return instruction;
-
-                    firstTime = false;
-                }
-            }
-        }*/
-
     }
 
     // REFERENCE: GetUpdatedAvailableVerbsList
@@ -129,7 +73,7 @@ namespace Guardians
 
         public static Job TryGiveJobWithExtraVerbs(this JobGiver_Manhunter jobGiver, Pawn pawn)
         {
-            Verb verb = pawn.TryGetAttackVerb(false);
+            Verb verb = pawn.TryGetAttackVerb(null);
             if (verb == null)
             {
                 return null;
@@ -137,7 +81,7 @@ namespace Guardians
             // Here be dragons
             if (!(verb is Verb_MeleeAttack))
             {
-                return new Job(JobDefOf.WaitCombat, JobGiver_AIFightEnemy.ExpiryInterval_ShooterSucceeded.RandomInRange, true);
+                return new Job(JobDefOf.Wait_Combat, JobGiver_AIFightEnemy.ExpiryInterval_ShooterSucceeded.RandomInRange, true);
             }
             Pawn pawn2 = jobGiver.FindPawnTarget(pawn);
             if (pawn2 != null && pawn.CanReach(pawn2, PathEndMode.Touch, Danger.Deadly, false, TraverseMode.ByPawn))
@@ -177,11 +121,6 @@ namespace Guardians
             }
             return null;
         }
-
-        /*public static Job TryGetExtraVerbJob(JobGiver_Manhunter jobGiver, Pawn pawn)
-        {
-
-        }*/
 
         // REFERENCE: TryGetMeleeVerb
         public static Verb TryGetExtraVerb(Pawn pawn)

@@ -39,7 +39,8 @@ namespace Guardians
         {
             Pawn pawn = (Pawn)__instance.caster;
             resultingLine = new ShootLine(root, targ.Cell);
-            if (BigBodyHelper.IsBigBody(pawn) && __instance.verbProps.MeleeRange)
+            //if (BigBodyHelper.IsBigBody(pawn) && __instance.verbProps.range <= 1.42f) //this.verbProps.IsMeleeAttack)
+            if (BigBodyHelper.IsBigBody(pawn) && pawn.BigBodyCanReach(targ.Cell))
             {
                 __result = BigBodyHelper.CanReachImmediate(root, targ, pawn.Map, PathEndMode.Touch, pawn);
                 return false;
@@ -118,12 +119,13 @@ namespace Guardians
             // NOTE: can this be better?
             // ASSUME: pawns are square
             //bool canReach = pawn.BodySize / 2 >= start.DistanceTo(target.Cell);
-            bool canReach = pawn.def.Size.x / 2 >= start.DistanceTo(target.Cell);
+            //bool canReach = pawn.def.Size.x / 2 >= start.DistanceTo(target.Cell);
 #if DEBUG
             Log.Message($"BigBodyHelper.CanReachImmediate: {canReach}");
 #endif
-            return canReach;
+            return pawn.BigBodyCanReach(target.Cell);
         }
 
+        public static bool BigBodyCanReach(this Pawn pawn, IntVec3 targetCell) => pawn.def.Size.x / 2 >= pawn.Position.DistanceTo(targetCell);
     }
 }
